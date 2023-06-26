@@ -6,8 +6,6 @@
 // 10 09 08 07
 
 
-// пока не решил
-
 int[,] matrix = new int[,]
 {
     {0, 0, 0, 0},
@@ -15,6 +13,15 @@ int[,] matrix = new int[,]
     {0, 0, 0, 0},
     {0, 0, 0, 0}
 };
+// int[,] matrix = new int[,]
+// {
+//     {0, 0, 0, 0, 0, 0},
+//     {0, 0, 0, 0, 0, 0},
+//     {0, 0, 0, 0, 0, 0},
+//     {0, 0, 0, 0, 0, 0},
+//     {0, 0, 0, 0, 0, 0},
+//     {0, 0, 0, 0, 0, 0}
+// };
 
 void PrintArray(int[,] collection)
 {
@@ -31,42 +38,64 @@ void PrintArray(int[,] collection)
 void FillMatrix(int rows, int cols)
 {
     int count = 1;
-    int countrow = 0;
-    int countcolumn = 0;
-    int row = matrix.GetLength(0);
-    int column = matrix.GetLength(1);
-    for (int i = 0; i < matrix.GetLength(1) - 1; i++) // строка 1
+
+    int rowUp = 0; // с нулевой строки
+    int rowDown = matrix.GetLength(0) - 1; // с крайней строки
+
+    int columLeft = 0; // крайний левый столбец
+    int columRight = matrix.GetLength(1); // крайний правый столбец
+    
+    for (int i = 0; i < columRight; i++) // строка ВЕРХНЯЯ
     {
-        matrix[countrow, i] = count;
+        matrix[rowUp, i] = count;
         count++;
     }
-    countrow++;
-    for (int j = 0; j < matrix.GetLength(0); j++) // столбец 4
+    rowUp++;
+    columRight--;
+
+    for (int j = rowUp; j <= columRight; j++) // столбец ПРАВЫЙ
     {
-        matrix[j, (column - 1) - countcolumn] = count;
+        matrix[j, columRight] = count;
         count++;
     }
-    for (int k = matrix.GetLength(1) - 2; k > 0 ; k--) // строка 4
+    columRight--;
+
+    for (int k = columRight; k >= 0; k--) // строка НИЖНЯЯ
     {
-        matrix[row - countrow, k] = count;
+        matrix[rowDown, k] = count;
         count++;
     }
-    for (int n = matrix.GetLength(0) - 1; n > 0; n--) // столбец 1
+    rowDown--;
+
+    for (int n = rowDown; n > 0; n--) // столбец ЛЕВЫЙ
     {
-        matrix[n, countcolumn] = count;
+        matrix[n, columLeft] = count;
         count++;
     }
-    for (int m = 1; m <= matrix.GetLength(1) - 2; m++) // строка 2
+    columLeft++;
+
+
+
+    for (int m = rowUp; m <= columRight; m++) // строка 2
     {
-        matrix[countrow, m] = count;
+        matrix[rowUp, m] = count;
         count++;
     }
-    countrow++;
-    for (int p = matrix.GetLength(0) - 2; p > 0; p--) // строка 3
+    rowUp++;
+
+    for (int n = rowUp; n <= rowDown; n++) // столбец 4
     {
-        matrix[countrow, p] = count;
+        matrix[n, columRight] = count;
         count++;
     }
+    columRight--;
+
+    for (int o = columRight; o > 0; o--) // строка 4
+    {
+        matrix[rowDown, o] = count;
+        count++;
+    }
+    rowDown--;
 }
 
 PrintArray(matrix);
